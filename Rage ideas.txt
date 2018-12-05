@@ -1,0 +1,17 @@
+Detect ping use total number of pings: stop ping
+KDA
+Ad hominem: "you noob, you so bad, you suck, you feed, you're trolling"
+Check first blood
+Win/Loss count player
+ward maps
+insulter d'une league en dessous
+Gestion des teamfights
+Dégats pris, xp, différentiel
+wards score
+ GET /heroes/{hero_id}/matchups
+Compare to average stat
+Get results against other heroes for a hero
+efficency
+gold/min
+difference with direct opponent (xp,gold, kill)
+hero match-ups
