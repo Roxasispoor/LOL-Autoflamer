@@ -8,7 +8,7 @@ insulter d'une league en dessous
 Gestion des teamfights
 Dégats pris, xp, différentiel
 wards score
- GET /heroes/{hero_id}/matchups
+GET /heroes/{hero_id}/matchups
 Compare to average stat
 Get results against other heroes for a hero
 efficency
