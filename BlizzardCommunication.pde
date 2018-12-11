@@ -77,6 +77,8 @@ public class BlizzardCommunication {
         case 1 :
           result = "F***, " + getMinXP(ourTeam).getString("personaname") + ", try to pex !!!!!!!";
           break;
+        case 2 : 
+        result = GetMostPing();
         default: break;
       }
       
