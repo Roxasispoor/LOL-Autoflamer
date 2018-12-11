@@ -39,7 +39,8 @@ class SensorData {
 
 //  Buffer
 ArrayList<SensorData> SensorHistoric;
-
+JSONArray heroes;
+BlizzardCommunication bc;
 
 void setup()
 {
@@ -53,9 +54,30 @@ void setup()
   arduino.pinMode(inDigPindB,Arduino.INPUT);
   // Pin output
   arduino.pinMode(outPinLED, Arduino.OUTPUT);
-
-  //  ça faudrait le virer
-  size(0,0);
+  
+  heroes = loadJSONArray("https://api.opendota.com/api/heroes");
+      try
+      {
+        Keyboard keyboard = new Keyboard();
+        bc=new BlizzardCommunication();
+        bc.FillSteamID();
+        
+        bc.GetCurrentMatch();
+   
+        println(bc.injureOurTeam());
+        //Initialize
+       // bc.GetPlayers(bc.GetCurrentMatch());
+        //println(enemies.get(3));
+        //println(bc.GetChampion(bc.allies.getJSONObject(0)));
+        
+      // keyboard.type("Hello there, how are you?");  
+    }
+       catch (AWTException e)
+    {
+    e.printStackTrace();
+    }
+       
+   
 }
 
 //  Lit les capteurs et stocke les valeurs dans le buffer
@@ -148,7 +170,7 @@ void turnLightOn() {
 void draw() {
   readSensors();
   if(proceedData()){
-    println("Rage !!!!!!!");
+        println(bc.injureOurTeam());
     turnLightOn();
   }
 }

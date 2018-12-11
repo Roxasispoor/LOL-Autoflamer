@@ -97,7 +97,7 @@ public class BlizzardCommunication {
     
     public String injureOurTeam() {
       String result = "";
-      int seed = (int)(Math.random() * 3);
+      int seed = (int)(Math.random() * 4);
       switch(seed) {
         case 0 :
           result = "Stop suiciding you " + getName(getMinKDA(ourTeam)) + " !!!!!!!";
@@ -111,8 +111,8 @@ public class BlizzardCommunication {
             result = "F***ing bot " + getName(playerToInjure) + " !!!!!!!";
           }
           break;
-        case 2 : 
-        result = GetMostPing();
+        case 3 : 
+        result = GetMostPing(ourTeam);
         default: break;
       }
       
@@ -159,7 +159,7 @@ public class BlizzardCommunication {
 
     public String injureOtherTeam() {
       String result = "";
-      int seed = (int)(Math.random() * 4;
+      int seed = (int)(Math.random() * 4);
       switch(seed) {
         case 0 :
           result = "" + getName(getMaxKDA((ourTeam + 1) % 2)) + " FOCUS !!!!!!!";
@@ -207,11 +207,7 @@ public class BlizzardCommunication {
         println("JSONObject could not be parsed");
         return 0;
      } 
-    else 
-    {
-     println("Hello there"); 
    
-    }
     
       playersList = new ArrayList<JSONArray>();   
       playersList.add(new JSONArray());
@@ -230,7 +226,7 @@ public class BlizzardCommunication {
    }
       for(int i = 0; i < temp.size(); i++) 
       {
-           println("Hello there 1.5"); 
+   //        println("Hello there 1.5"); 
             if (temp.getJSONObject(i).getBoolean("isRadiant") == true) 
             {
                 playersList.get(0).append(temp.getJSONObject(i));
@@ -246,53 +242,19 @@ public class BlizzardCommunication {
    return matchData.getLong("match_id");
   }
    
-   /* public void GetPlayers(long matchId)
-    {
-      Boolean playerSide = false;
-      JSONArray playersList;
+   
 
-      matchData = loadJSONObject("https://api.opendota.com/api/matches/" + matchId);
-      playersList = matchData.getJSONArray("players");
- 
-      for (int i = 0; i<10;i++) {
-        int idSummoner = Integer.parseInt(summonerSteamId);
-        if (playersList.getJSONObject(i).get("account_id") instanceof Integer) {
-          println("Cest un entier");
-        }
-        if (playersList.getJSONObject(i).getInt("account_id") == idSummoner) {
-          playerSide = playersList.getJSONObject(i).getBoolean("isRadiant");
-        }
-      }
-
-      for (int i = 0; i<10;i++) {
-        if (playersList.getJSONObject(i).getBoolean("isRadiant") == playerSide) {
-          allies.append(playersList.getJSONObject(i));
-        }
-        else if (playersList.getJSONObject(i).getBoolean("isRadiant") != playerSide) {
-            enemies.append(playersList.getJSONObject(i)); 
-        }
-      }
-    }
-*/
-   public String GetRandomInsultNoStart()
+   public String GetMostPing(int team)
    {
-     return "";
-   }
-   public String GetRandomInsult()
-   {
-     return "";
-   }
-   public String GetMostPing()
-   {
-     JSONArray allies=null;
+    
      int maxPing=0;
      JSONObject maxPinger=null;
-     for (int i=0; i < allies.size(); i++) 
+     for (int i=0; i < playersList.get(team).size(); i++) 
      {
-       int numberOfPings = allies.getJSONObject(i).getInt("pings");
+       int numberOfPings = playersList.get(team).getJSONObject(i).getInt("pings");
         if(numberOfPings>maxPing)
         {
-          maxPinger = allies.getJSONObject(i);
+          maxPinger = playersList.get(team).getJSONObject(i);
           maxPing = numberOfPings;
         }
     }
@@ -302,7 +264,7 @@ public class BlizzardCommunication {
     }
     else
     {
-      return "If you ping only once more" + GetChampion(maxPinger) + "I quit";
+      return "If you ping only once more " + GetChampion(maxPinger) + " I quit";
     }
   }
  
