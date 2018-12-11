@@ -19,9 +19,10 @@ int normalPressure = 0;
 
 float maxdB1 = 0;
 float maxdB2 = 0;
+int maxPressure = 0;
 
 //  Valeur de trigger de la pression
-int triggerPressure = 300;
+int triggerPressure = 800;
 
 //  Permet de savoir s'il faut initialiser les valeurs normale
 boolean isInitialized = false;
@@ -68,11 +69,12 @@ void readSensors() {
   
   if(maxdB1 < newData.dB) maxdB1 = newData.dB;
   if(maxdB2 < newData.dB2) maxdB2 = newData.dB2;
+  if(maxPressure < newData.pressure) maxPressure = newData.pressure;
   
   println("dB 1 : " + newData.dB + " ; Max : " + maxdB1);
   println("dB 2 : " + newData.dB2 + " ; Max : " + maxdB2);
   // println("dB 1 digital : " + (float)arduino.digitalRead(inDigPindB));
-  println("pressure : " + newData.pressure + "\n");
+  println("pressure : " + newData.pressure + " ; Max : " + maxPressure + "\n");
 }
 
 //  Analyse les données du buffer, renvoie true si l'utilisateur rage
