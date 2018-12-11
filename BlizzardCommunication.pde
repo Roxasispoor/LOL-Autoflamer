@@ -111,6 +111,8 @@ public class BlizzardCommunication {
             result = "F***ing bot " + getName(playerToInjure) + " !!!!!!!";
           }
           break;
+        case 2 : 
+        result = GetMostPing();
         default: break;
       }
       
