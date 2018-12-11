@@ -5,7 +5,132 @@ public class BlizzardCommunication {
     private String summonerName="missingk";
     private String summonerSteamId="";
     public JSONObject match;
+    private ArrayList<JSONArray> playersList;
+    private long playerId;
+    private int injureNumber = 2;
+    int ourTeam;
 
+   
+    private JSONObject getMinKDA(int team) {
+        int minKDA = 1000;
+        JSONObject playerToInjure = null;
+        for(int i = 0; i < playersList.get(team).size(); i++) {
+            int kda = playersList.get(team).getJSONObject(i).getInt("kda");
+            if(kda < minKDA) {
+                minKDA = kda;
+                playerToInjure = playersList.get(team).getJSONObject(i);
+            }
+        }
+        
+        return playerToInjure;
+    }
+    
+      private JSONObject getMaxKDA(int team) {
+        int maxKDA = 0;
+        JSONObject playerToInjure = null;
+        for(int i = 0; i < playersList.get(team).size(); i++) {
+            int kda = playersList.get(team).getJSONObject(i).getInt("kda");
+            if(kda > maxKDA) {
+                maxKDA = kda;
+                playerToInjure = playersList.get(team).getJSONObject(i);
+            }
+        }
+        
+        return playerToInjure;
+    }
+
+    private JSONObject getMinXP(int team) {
+        int minXP = 1000000000;
+        JSONObject playerToInjure = null;
+        for(int i = 0; i < playersList.get(team).size(); i++) {
+            int xp = playersList.get(team).getJSONObject(i).getInt("total_xp");
+            if(xp < minXP) {
+                minXP = xp;
+                playerToInjure = playersList.get(team).getJSONObject(i);
+            }
+        }
+        
+        return playerToInjure;
+    }
+
+    private JSONObject getMaxXP(int team) {
+        int maxXP = 0;
+        JSONObject playerToInjure = null;
+        for(int i = 0; i < playersList.get(team).size(); i++) {
+            int xp = playersList.get(team).getJSONObject(i).getInt("total_xp");
+            if(xp > maxXP) {
+                maxXP = xp;
+                playerToInjure = playersList.get(team).getJSONObject(i);
+            }
+        }
+        
+        return playerToInjure;
+    }
+    
+    public String injureOurTeam() {
+      String result = "";
+      int seed = (int)(Math.random() * (injureNumber + 1));
+      switch(seed) {
+        case 0 :
+          result = "Stop suiciding you " + getMinKDA(ourTeam).getString("personaname") + " !!!!!!!";
+          break;
+        case 1 :
+          result = "F***, " + getMinXP(ourTeam).getString("personaname") + ", try to pex !!!!!!!";
+          break;
+        default: break;
+      }
+      
+      return result;
+    }
+        public String GetChampion(JSONObject player) {
+            int id;
+            String name;
+            id = player.getInt("hero_id");
+            if (id < 0 || id > 121) {
+               println("Champion does not exist");
+               return "No champion"; 
+            }
+            if ( id > 23) {
+               id--; 
+            }
+            if (id > 112) {
+               id = id - 4; 
+            } 
+            name = heroes.getJSONObject(id - 1).getString("localized_name");
+            return name;
+
+    }
+    
+    public int GetLaneEfficiency(JSONObject player) {
+      float efficiency;
+      int result = 0;
+      efficiency = player.getFloat("lane_efficiency");
+      if (efficiency < 0.7) {
+          result = 1;
+      }
+      if (efficiency > 0.7) {
+          result = 0;
+      }
+      return result;
+    }
+
+    public String injureOtherTeam() {
+      String result = "";
+      int seed = (int)(Math.random() * (injureNumber + 1));
+      switch(seed) {
+        case 0 :
+          result = "" + getMaxKDA((ourTeam + 1) % 2).getString("personaname") + " FOCUS !!!!!!!";
+          break;
+        case 1 :
+          result = "F***, " + getMaxXP((ourTeam + 1) % 2).getString("personaname") + ", cheater !!!!!!!";
+          break;
+        default: break;
+      }
+      
+      return result;
+    }
+
+ 
     public void FillSteamID()
     {
       
@@ -14,7 +139,8 @@ public class BlizzardCommunication {
       long steamid64ffs = Long.parseLong(children[0].getContent());
       println(steamid64ffs);
       long substract = 76561197960265728l;
-      summonerSteamId = String.format ("%d", steamid64ffs-substract);
+      playerId=steamid64ffs-substract;
+      summonerSteamId = String.format ("%d",playerId );
       println(summonerSteamId);
     
     
@@ -23,8 +149,8 @@ public class BlizzardCommunication {
     public long GetCurrentMatch()
   {
      println(summonerSteamId);
-     JSONObject match = loadJSONArray("https://api.opendota.com/api/players/" + summonerSteamId + "/recentMatches").getJSONObject(0);  
-     if (match == null) 
+     JSONObject matchData = loadJSONArray("https://api.opendota.com/api/players/" + summonerSteamId + "/recentMatches").getJSONObject(0);  
+     if (matchData == null) 
      {
         println("JSONObject could not be parsed");
         return 0;
@@ -32,26 +158,70 @@ public class BlizzardCommunication {
     else 
     {
      println("Hello there"); 
-    return match.getLong("match_id"); 
+   
     }
+    
+      playersList = new ArrayList<JSONArray>();   
+      playersList.add(new JSONArray());
+      playersList.add(new JSONArray());
+     println(matchData.getLong("match_id"));
+      match = loadJSONObject("https://api.opendota.com/api/matches/" + matchData.getLong("match_id"));
+      if(match==null)
+      {
+        println("match not found");
+      }
+     JSONArray temp = match.getJSONArray("players");
+    if(temp==null)
+     {
+       println("error");
+       return 0;  
+   }
+      for(int i = 0; i < temp.size(); i++) 
+      {
+           println("Hello there 1.5"); 
+            if (temp.getJSONObject(i).getBoolean("isRadiant") == true) 
+            {
+                playersList.get(0).append(temp.getJSONObject(i));
+                if(!temp.getJSONObject(i).isNull("account_id") && ((Integer) temp.getJSONObject(i).get("account_id")).intValue() ==  playerId) ourTeam = 0;
+            }
+            else if (temp.getJSONObject(i).getBoolean("isRadiant") == false)
+            {
+                playersList.get(1).append(temp.getJSONObject(i));
+                if( !temp.getJSONObject(i).isNull("account_id") && ((Integer) temp.getJSONObject(i).get("account_id")).intValue() ==  playerId) ourTeam = 1;
+            }
+        }
+         println("Hello there 2"); 
+   return matchData.getLong("match_id");
   }
    
-    public void GetPlayers(long matchId)
+   /* public void GetPlayers(long matchId)
     {
-     
+      Boolean playerSide = false;
+      JSONArray playersList;
+
       matchData = loadJSONObject("https://api.opendota.com/api/matches/" + matchId);
       playersList = matchData.getJSONArray("players");
  
       for (int i = 0; i<10;i++) {
-        if (playersList.getJSONObject(i).getBoolean("isRadiant") == true) {
+        int idSummoner = Integer.parseInt(summonerSteamId);
+        if (playersList.getJSONObject(i).get("account_id") instanceof Integer) {
+          println("Cest un entier");
+        }
+        if (playersList.getJSONObject(i).getInt("account_id") == idSummoner) {
+          playerSide = playersList.getJSONObject(i).getBoolean("isRadiant");
+        }
+      }
+
+      for (int i = 0; i<10;i++) {
+        if (playersList.getJSONObject(i).getBoolean("isRadiant") == playerSide) {
           allies.append(playersList.getJSONObject(i));
         }
-        else if (playersList.getJSONObject(i).getBoolean("isRadiant") == false) {
+        else if (playersList.getJSONObject(i).getBoolean("isRadiant") != playerSide) {
             enemies.append(playersList.getJSONObject(i)); 
         }
       }
     }
-
+*/
    public String GetRandomInsultNoStart()
    {
      return "";
@@ -84,23 +254,4 @@ public class BlizzardCommunication {
     }
   }
  
-
-    public String GetChampion(JSONObject player) {
-            int id;
-            String name;
-            id = player.getInt("hero_id");
-            if (id < 0 || id > 121) {
-               println("Champion does not exist");
-               return "No champion"; 
-            }
-            if ( id > 23) {
-               id--; 
-            }
-            if (id > 112) {
-               id = id - 4; 
-            } 
-            name = heroes.getJSONObject(id - 1).getString("localized_name");
-            return name;
-
-    }
 }

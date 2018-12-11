@@ -3,7 +3,7 @@ import java.awt.*;
 class Tentative {
     private JSONObject _matchData;
     private ArrayList<JSONArray> playersList;
-    private int _playerId;
+    private long _playerId;
     private int injureNumber = 2;
     int ourTeam;
 
