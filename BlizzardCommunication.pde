@@ -111,7 +111,7 @@ public class BlizzardCommunication {
             result = "F***ing bot " + getName(playerToInjure) + " !!!!!!!";
           }
           break;
-        case 2 : 
+        case 3 : 
         result = GetMostPing();
         default: break;
       }
@@ -159,7 +159,7 @@ public class BlizzardCommunication {
 
     public String injureOtherTeam() {
       String result = "";
-      int seed = (int)(Math.random() * 4;
+      int seed = (int)(Math.random() * 4);
       switch(seed) {
         case 0 :
           result = "" + getName(getMaxKDA((ourTeam + 1) % 2)) + " FOCUS !!!!!!!";
