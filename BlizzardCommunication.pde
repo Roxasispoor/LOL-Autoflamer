@@ -6,6 +6,7 @@ public class BlizzardCommunication {
     private String summonerSteamId="";
    // public static int totalrequest = 0;
     public JSONObject match;
+
     public void FillSteamID()
     {
       
@@ -21,23 +22,24 @@ public class BlizzardCommunication {
     }
     
     public long GetCurrentMatch()
-    {
+  {
      println(summonerSteamId);
-       JSONObject match = loadJSONArray("https://api.opendota.com/api/players/" + summonerSteamId + "/recentMatches").getJSONObject(0);
-       
-    if (match == null) {
-    println("JSONObject could not be parsed");
-    return 0;
-  } 
-  else {
+     JSONObject match = loadJSONArray("https://api.opendota.com/api/players/" + summonerSteamId + "/recentMatches").getJSONObject(0);  
+     if (match == null) 
+     {
+        println("JSONObject could not be parsed");
+        return 0;
+     } 
+    else 
+    {
      println("Hello there"); 
     return match.getLong("match_id"); 
+    }
   }
-   }
    
     public void GetPlayers(long matchId)
     {
-      JSONArray playersList;
+     
       matchData = loadJSONObject("https://api.opendota.com/api/matches/" + matchId);
       playersList = matchData.getJSONArray("players");
  
@@ -51,5 +53,22 @@ public class BlizzardCommunication {
 
       }
     }
-    
+   public String GetRandomInsultNoStart()
+   {
+     return "";
+   }
+   public String GetRandomInsult()
+   {
+     return "";
+   }
+   public String GetMostPing()
+   {
+     JSONArray allies;
+     maxPing=0;
+     for (int i=0; i < allies.size(); i++) 
+     {
+      allies.getJSONObject(i);
+    }
+  }
+ 
 }
