@@ -15,3 +15,24 @@ efficency
 gold/min
 difference with direct opponent (xp,gold, kill)
 hero match-ups
+
+Beginings : 
+	-Oh my god
+	-How is it possible that
+	-Never seen someone that
+	-Hey
+	-WTF
+	-WOW...
+	-FFS
+	-
+
+Structure of the middle :
+	-[player id] scored/placed/dealt only [value]
+
+Endings : 
+	-uninstall pls
+	-kill yourself
+	-you bad
+	-noob
+	-
+	-
