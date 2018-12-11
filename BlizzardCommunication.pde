@@ -1,4 +1,5 @@
 import java.awt.*;
+import java.io.*;
 public class BlizzardCommunication {
 
     private String apiKey="RGAPI-fb66faaf-5446-44a4-b5c6-0258c1f6e765";
@@ -97,7 +98,7 @@ public class BlizzardCommunication {
     
     public String injureOurTeam() {
       String result = "";
-      int seed = (int)(Math.random() * 4);
+      int seed = (int)(Math.random() * 5);
       switch(seed) {
         case 0 :
           result = "Stop suiciding you " + getName(getMinKDA(ourTeam)) + " !!!!!!!";
@@ -113,6 +114,8 @@ public class BlizzardCommunication {
           break;
         case 3 : 
         result = GetMostPing(ourTeam);
+         case 4 : 
+        result = MinMaxLastChat();
 
         default: break;
       }
@@ -243,7 +246,36 @@ public class BlizzardCommunication {
    return matchData.getLong("match_id");
   }
    
+   public String MinMaxLastChat()
+   {
+     JSONArray chat= match.getJSONArray("chat");
    
+     String r = "";
+       String s="";
+     for (int z= chat.size()-1;z>0;z--)
+     {
+        if(chat.getJSONObject(z).getString("type").equals("chat"))
+        {
+          s= chat.getJSONObject(z).getString("key");
+         break;
+        }
+     }
+   //  s="patate is life";
+     for (int i = 0; i < s.length(); i++) 
+     {
+    if (i % 2 == 0) {
+        r += s.substring(i, i + 1).toUpperCase();
+    } 
+    else {
+        r += s.substring(i, i + 1);
+    }
+    }
+     if(r=="")
+     {
+       return "You all are so silent it annoys me to play with such zombies";
+     }
+     return r;
+   }
 
    public String GetMostPing(int team)
    {

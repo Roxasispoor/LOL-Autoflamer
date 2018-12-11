@@ -44,16 +44,6 @@ BlizzardCommunication bc;
 
 void setup()
 {
-  //noLoop();
-  SensorHistoric = new ArrayList<SensorData>();
-  arduino=new Arduino(this,Arduino.list()[0],57600);
-  //  Pin input
-  arduino.pinMode(inPindB,Arduino.INPUT);
-  arduino.pinMode(inPindB2,Arduino.INPUT);
-  arduino.pinMode(inPinPressure,Arduino.INPUT);
-  arduino.pinMode(inDigPindB,Arduino.INPUT);
-  // Pin output
-  arduino.pinMode(outPinLED, Arduino.OUTPUT);
   
   heroes = loadJSONArray("https://api.opendota.com/api/heroes");
       try
@@ -64,18 +54,30 @@ void setup()
         
         bc.GetCurrentMatch();
    
-        println(bc.injureOurTeam());
+       // println(bc.injureOurTeam());
         //Initialize
        // bc.GetPlayers(bc.GetCurrentMatch());
         //println(enemies.get(3));
         //println(bc.GetChampion(bc.allies.getJSONObject(0)));
-        
-      // keyboard.type("Hello there, how are you?");  
+     println(bc.MinMaxLastChat());
+     
+     //   keyboard.type(bc.injureOurTeam());
+     
     }
        catch (AWTException e)
     {
     e.printStackTrace();
     }
+  //noLoop();
+  SensorHistoric = new ArrayList<SensorData>();
+  arduino=new Arduino(this,Arduino.list()[0],57600);
+  //  Pin input
+  arduino.pinMode(inPindB,Arduino.INPUT);
+  arduino.pinMode(inPindB2,Arduino.INPUT);
+  arduino.pinMode(inPinPressure,Arduino.INPUT);
+  arduino.pinMode(inDigPindB,Arduino.INPUT);
+  // Pin output
+  arduino.pinMode(outPinLED, Arduino.OUTPUT);
        
    
 }
