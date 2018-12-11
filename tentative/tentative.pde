@@ -40,7 +40,7 @@ class Tentative {
         return playerToInjure;
     }
     
-      private JSONObject getMaxKDA(int team) {
+    private JSONObject getMaxKDA(int team) {
         int maxKDA = 0;
         JSONObject playerToInjure = null;
         for(int i = 0; i < playersList.get(team).size(); i++) {

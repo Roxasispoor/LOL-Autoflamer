@@ -66,6 +66,34 @@ public class BlizzardCommunication {
         
         return playerToInjure;
     }
+
+
+    private JSONObject getBot(int team) {
+        JSONObject playerToInjure = null;
+        for(int i = 0; i < playersList.get(team).size(); i++) {
+            if(playersList.get(team).getJSONObject(i).isNull("account_id")) {
+                playerToInjure = playersList.get(team).getJSONObject(i);
+            }
+        }
+        
+        return playerToInjure;
+    }
+
+    private JSONObject getKillXP(int team) {
+        int maxKill = 0;
+        JSONObject playerToInjure = null;
+        for(int i = 0; i < playersList.get(team).size(); i++) {
+            int kill = playersList.get(team).getJSONObject(i).getInt("kills");
+            if(kill > maxKill) {
+                maxKill = kill;
+                playerToInjure = playersList.get(team).getJSONObject(i);
+            }
+        }
+        
+        return playerToInjure;
+    }
+
+  
     
     public String injureOurTeam() {
       String result = "";
