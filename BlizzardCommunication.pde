@@ -79,7 +79,7 @@ public class BlizzardCommunication {
         return playerToInjure;
     }
 
-    private JSONObject getKillXP(int team) {
+    private JSONObject getMaxKill(int team) {
         int maxKill = 0;
         JSONObject playerToInjure = null;
         for(int i = 0; i < playersList.get(team).size(); i++) {
@@ -97,36 +97,49 @@ public class BlizzardCommunication {
     
     public String injureOurTeam() {
       String result = "";
-      int seed = (int)(Math.random() * (injureNumber + 1));
+      int seed = (int)(Math.random() * 3);
       switch(seed) {
         case 0 :
-          result = "Stop suiciding you " + getMinKDA(ourTeam).getString("personaname") + " !!!!!!!";
+          result = "Stop suiciding you " + getName(getMinKDA(ourTeam)) + " !!!!!!!";
           break;
         case 1 :
-          result = "F***, " + getMinXP(ourTeam).getString("personaname") + ", try to pex !!!!!!!";
+          result = "F***, " + getName(getMinXP(ourTeam)) + ", try to pex !!!!!!!";
+          break;
+        case 2 :
+          JSONObject playerToInjure = getBot(ourTeam);
+          if(playerToInjure != null) {
+            result = "F***ing bot " + getName(playerToInjure) + " !!!!!!!";
+          }
           break;
         default: break;
       }
       
       return result;
     }
-        public String GetChampion(JSONObject player) {
-            int id;
-            String name;
-            id = player.getInt("hero_id");
-            if (id < 0 || id > 121) {
-               println("Champion does not exist");
-               return "No champion"; 
-            }
-            if ( id > 23) {
-               id--; 
-            }
-            if (id > 112) {
-               id = id - 4; 
-            } 
-            name = heroes.getJSONObject(id - 1).getString("localized_name");
-            return name;
 
+
+    public String getName(JSONObject player) {
+      if(player.isNull("personaname"))
+        return GetChampion(player);
+      return player.getString("personaname");
+    }
+
+    public String GetChampion(JSONObject player) {
+      int id;
+      String name;
+      id = player.getInt("hero_id");
+      if (id < 0 || id > 121) {
+          println("Champion does not exist");
+          return "No champion"; 
+      }
+      if ( id > 23) {
+          id--; 
+      }
+      if (id > 112) {
+          id = id - 4; 
+      } 
+      name = heroes.getJSONObject(id - 1).getString("localized_name");
+      return name;
     }
     
     public int GetLaneEfficiency(JSONObject player) {
@@ -144,13 +157,22 @@ public class BlizzardCommunication {
 
     public String injureOtherTeam() {
       String result = "";
-      int seed = (int)(Math.random() * (injureNumber + 1));
+      int seed = (int)(Math.random() * 4;
       switch(seed) {
         case 0 :
-          result = "" + getMaxKDA((ourTeam + 1) % 2).getString("personaname") + " FOCUS !!!!!!!";
+          result = "" + getName(getMaxKDA((ourTeam + 1) % 2)) + " FOCUS !!!!!!!";
           break;
         case 1 :
-          result = "F***, " + getMaxXP((ourTeam + 1) % 2).getString("personaname") + ", cheater !!!!!!!";
+          result = "F***, " + getName(getMaxXP((ourTeam + 1) % 2)) + ", cheater !!!!!!!";
+          break;
+        case 2 :
+          JSONObject playerToInjure = getBot((ourTeam + 1) % 2);
+          if(playerToInjure != null) {
+            result = "F***ing bot " + getName(playerToInjure) + " !!!!!!!";
+          }
+          break;
+        case 3 :
+          result = "with" + getName(getMaxKill((ourTeam + 1) % 2)) + ", we take you 2v8 !!!!!!!";
           break;
         default: break;
       }
