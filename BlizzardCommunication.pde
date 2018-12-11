@@ -113,6 +113,7 @@ public class BlizzardCommunication {
           break;
         case 3 : 
         result = GetMostPing(ourTeam);
+
         default: break;
       }
       
