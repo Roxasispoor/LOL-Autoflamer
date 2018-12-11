@@ -6,6 +6,9 @@ Arduino arduino;
 int inPindB=0;
 int inPindB2= 2;
 int inPinPressure=1;
+
+int inDigPindB = 12;
+
 //  Pin nimérique de la led
 int outPinLED = 13;
 
@@ -14,6 +17,9 @@ float normaldB1 = 0;
 float normaldB2 = 0;
 int normalPressure = 0;
 
+float maxdB1 = 0;
+float maxdB2 = 0;
+
 //  Valeur de trigger de la pression
 int triggerPressure = 300;
 
@@ -21,7 +27,7 @@ int triggerPressure = 300;
 boolean isInitialized = false;
 
 //  Taille du buffer
-int historicSize = 50;
+int historicSize = 20;
 
 //  Classe contenant les donnees recuperees à chaque tic
 class SensorData {
@@ -43,6 +49,7 @@ void setup()
   arduino.pinMode(inPindB,Arduino.INPUT);
   arduino.pinMode(inPindB2,Arduino.INPUT);
   arduino.pinMode(inPinPressure,Arduino.INPUT);
+  arduino.pinMode(inDigPindB,Arduino.INPUT);
   // Pin output
   arduino.pinMode(outPinLED, Arduino.OUTPUT);
 
@@ -59,8 +66,12 @@ void readSensors() {
   
   SensorHistoric.add(newData);
   
-  println("dB 1 : " + newData.dB);
-  println("dB 2 : " + newData.dB2);
+  if(maxdB1 < newData.dB) maxdB1 = newData.dB;
+  if(maxdB2 < newData.dB2) maxdB2 = newData.dB2;
+  
+  println("dB 1 : " + newData.dB + " ; Max : " + maxdB1);
+  println("dB 2 : " + newData.dB2 + " ; Max : " + maxdB2);
+  // println("dB 1 digital : " + (float)arduino.digitalRead(inDigPindB));
   println("pressure : " + newData.pressure + "\n");
 }
 
@@ -93,8 +104,8 @@ boolean proceedData() {
     }
   
     //  Test si les capteurs dépassent les valeurs de seuil
-    r =  dBSum1 / SensorHistoric.size() >= normaldB1 + 2.f 
-      || dBSum2 / SensorHistoric.size() >= normaldB2 + 2.f
+    r =  SensorHistoric.get(SensorHistoric.size() - 1).dB >= normaldB1 + 10.f 
+      || SensorHistoric.get(SensorHistoric.size() - 1).dB2 >= normaldB2 + 10f
       || pressureSum / SensorHistoric.size() > triggerPressure;
   
     if(r) {
