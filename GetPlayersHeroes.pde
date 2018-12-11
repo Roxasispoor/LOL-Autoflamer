@@ -4,7 +4,7 @@ import processing.net.*;
 JSONObject matchData;
 JSONArray playersList;
 
-
+/**
 void GetPlayers(long matchId)
 {
   matchData = loadJSONObject("https://api.opendota.com/api/matches/" + matchId);
@@ -19,4 +19,4 @@ void GetPlayers(long matchId)
     }
 
   }
-}
+}**/

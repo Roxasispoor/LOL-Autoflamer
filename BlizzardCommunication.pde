@@ -43,13 +43,30 @@ public class BlizzardCommunication {
  
       for (int i = 0; i<10;i++) {
         if (playersList.getJSONObject(i).getBoolean("isRadiant") == true) {
-            allies.append(playersList.getJSONObject(i).getInt("hero_id"));
+          allies.append(playersList.getJSONObject(i));
         }
         else if (playersList.getJSONObject(i).getBoolean("isRadiant") == false) {
-            enemies.append(playersList.getJSONObject(i).getInt("hero_id")); 
+            enemies.append(playersList.getJSONObject(i)); 
         }
-
       }
     }
     
+    public String GetChampion(JSONObject player) {
+            int id;
+            String name;
+            id = player.getInt("hero_id");
+            if (id < 0 || id > 121) {
+               println("Champion does not exist");
+               return "No champion"; 
+            }
+            if ( id > 23) {
+               id--; 
+            }
+            if (id > 112) {
+               id = id - 4; 
+            } 
+            name = heroes.getJSONObject(id - 1).getString("localized_name");
+            return name;
+
+    }
 }
