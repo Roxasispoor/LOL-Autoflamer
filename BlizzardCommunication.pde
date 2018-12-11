@@ -4,7 +4,6 @@ public class BlizzardCommunication {
     private String apiKey="RGAPI-fb66faaf-5446-44a4-b5c6-0258c1f6e765";
     private String summonerName="missingk";
     private String summonerSteamId="";
-   // public static int totalrequest = 0;
     public JSONObject match;
 
     public void FillSteamID()
@@ -45,14 +44,14 @@ public class BlizzardCommunication {
  
       for (int i = 0; i<10;i++) {
         if (playersList.getJSONObject(i).getBoolean("isRadiant") == true) {
-            allies.append(playersList.getJSONObject(i).getInt("hero_id"));
+          allies.append(playersList.getJSONObject(i));
         }
         else if (playersList.getJSONObject(i).getBoolean("isRadiant") == false) {
-            enemies.append(playersList.getJSONObject(i).getInt("hero_id")); 
+            enemies.append(playersList.getJSONObject(i)); 
         }
-
       }
     }
+
    public String GetRandomInsultNoStart()
    {
      return "";
@@ -63,12 +62,45 @@ public class BlizzardCommunication {
    }
    public String GetMostPing()
    {
-     JSONArray allies;
-     maxPing=0;
+     JSONArray allies=null;
+     int maxPing=0;
+     JSONObject maxPinger=null;
      for (int i=0; i < allies.size(); i++) 
      {
-      allies.getJSONObject(i);
+       int numberOfPings = allies.getJSONObject(i).getInt("pings");
+        if(numberOfPings>maxPing)
+        {
+          maxPinger = allies.getJSONObject(i);
+          maxPing = numberOfPings;
+        }
+    }
+    if(maxPing==0)
+    {
+      return "If any of you guys ping me I ragequit";
+    }
+    else
+    {
+      return "If you ping only once more" + GetChampion(maxPinger) + "I quit";
     }
   }
  
+
+    public String GetChampion(JSONObject player) {
+            int id;
+            String name;
+            id = player.getInt("hero_id");
+            if (id < 0 || id > 121) {
+               println("Champion does not exist");
+               return "No champion"; 
+            }
+            if ( id > 23) {
+               id--; 
+            }
+            if (id > 112) {
+               id = id - 4; 
+            } 
+            name = heroes.getJSONObject(id - 1).getString("localized_name");
+            return name;
+
+    }
 }

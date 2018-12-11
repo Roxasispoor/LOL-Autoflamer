@@ -106,8 +106,8 @@ boolean proceedData() {
     }
   
     //  Test si les capteurs dépassent les valeurs de seuil
-    r =  SensorHistoric.get(SensorHistoric.size() - 1).dB >= normaldB1 + 10.f 
-      || SensorHistoric.get(SensorHistoric.size() - 1).dB2 >= normaldB2 + 10f
+    r =  SensorHistoric.get(SensorHistoric.size() - 1).dB >= normaldB1 + 4.f 
+      || SensorHistoric.get(SensorHistoric.size() - 1).dB2 >= normaldB2 + 4.f
       || pressureSum / SensorHistoric.size() > triggerPressure;
   
     if(r) {
