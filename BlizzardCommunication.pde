@@ -6,6 +6,8 @@ public class BlizzardCommunication {
     private String summonerSteamId="";
    // public static int totalrequest = 0;
     public JSONObject match;
+    public JSONArray allies;
+    public JSONArray enemies;
     public void FillSteamID()
     {
       
@@ -37,15 +39,26 @@ public class BlizzardCommunication {
    
     public void GetPlayers(long matchId)
     {
+      Boolean playerSide = false;
       JSONArray playersList;
       matchData = loadJSONObject("https://api.opendota.com/api/matches/" + matchId);
       playersList = matchData.getJSONArray("players");
  
       for (int i = 0; i<10;i++) {
-        if (playersList.getJSONObject(i).getBoolean("isRadiant") == true) {
+        int idSummoner = Integer.parseInt(summonerSteamId);
+        if (playersList.getJSONObject(i).get("account_id") instanceof Integer) {
+          println("Cest un entier");
+        }
+        if (playersList.getJSONObject(i).getInt("account_id") == idSummoner) {
+          playerSide = playersList.getJSONObject(i).getBoolean("isRadiant");
+        }
+      }
+
+      for (int i = 0; i<10;i++) {
+        if (playersList.getJSONObject(i).getBoolean("isRadiant") == playerSide) {
           allies.append(playersList.getJSONObject(i));
         }
-        else if (playersList.getJSONObject(i).getBoolean("isRadiant") == false) {
+        else if (playersList.getJSONObject(i).getBoolean("isRadiant") != playerSide) {
             enemies.append(playersList.getJSONObject(i)); 
         }
       }
@@ -68,5 +81,18 @@ public class BlizzardCommunication {
             name = heroes.getJSONObject(id - 1).getString("localized_name");
             return name;
 
+    }
+    
+    public int GetLaneEfficiency(JSONObject player) {
+      float efficiency;
+      int result = 0;
+      efficiency = player.getFloat("lane_efficiency");
+      if (efficiency < 0.7) {
+          result = 1;
+      }
+      if (efficiency > 0.7) {
+          result = 0;
+      }
+      return result;
     }
 }
