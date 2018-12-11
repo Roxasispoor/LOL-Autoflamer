@@ -5,7 +5,11 @@ void setup() {
       try
       {
         Keyboard keyboard = new Keyboard();
-       keyboard.type("Hello there, how are you?");  
+        BlizzardCommunication bc=new BlizzardCommunication();
+        bc.FillSteamID();
+        println(bc.GetCurrentMatch());
+        
+      // keyboard.type("Hello there, how are you?");  
     }
        catch (AWTException e)
     {
