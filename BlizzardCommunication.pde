@@ -189,7 +189,13 @@ public class BlizzardCommunication {
           result = beginning + getName(getMinKDA((ourTeam + 1) % 2)) + " just cant play!!!" + ending;
           break;
         case 1 :
-          result = beginning + getName(getMaxXP((ourTeam + 1) % 2)) + " only knows how to cheat!" + ending;
+        String name =getName(getMaxXP((ourTeam + 1) % 2)).replaceAll( "[^a-zA-Z0-9 !*]" , "" );
+        println(name);
+        if (name.equals(""));
+        {
+        name = GetChampion(getMaxXP((ourTeam + 1) % 2));
+        }
+          result = beginning + name + " only knows how to cheat!" + ending;
           break;
         case 2 :
           JSONObject playerToInjure = getBot((ourTeam + 1) % 2);
@@ -201,7 +207,13 @@ public class BlizzardCommunication {
           }
           break;
         case 3 :
-          result = "with " + getName(getMaxKill((ourTeam + 1) % 2)) + ", we take you 2v8 !!!!!!!";
+        String name2 =getName(getMaxXP((ourTeam + 1) % 2)).replaceAll( "[^a-zA-Z0-9 !*]" , "" );
+        println(name2);
+        if (name2.equals(""));
+        {
+        name2 = GetChampion(getMaxKill((ourTeam + 1) % 2));
+        }
+          result = "with " + name2 + ", we take you 2v8 !!!!!!!";
           break;
         default: break;
       }
@@ -224,7 +236,45 @@ public class BlizzardCommunication {
     
     
     }
+  public void FillSteamIDDemo()
+  {
+  summonerSteamId="397574220";
+  }
+  public long GetCurrentMatchDemo()
+  {
+         playersList = new ArrayList<JSONArray>();   
+      playersList.add(new JSONArray());
+      playersList.add(new JSONArray());
+      match = loadJSONObject("https://api.opendota.com/api/matches/" + "4136801721");
+      if(match==null)
+      {
+        println("match not found");
+      }
+     JSONArray temp = match.getJSONArray("players");
+    if(temp==null)
+     {
+       println("error");
+       return 0;  
+   }
+      for(int i = 0; i < temp.size(); i++) 
+      {
+   //        println("Hello there 1.5"); 
+            if (temp.getJSONObject(i).getBoolean("isRadiant") == true) 
+            {
+                playersList.get(0).append(temp.getJSONObject(i));
+                if(!temp.getJSONObject(i).isNull("account_id") && ((Integer) temp.getJSONObject(i).get("account_id")).intValue() ==  playerId) ourTeam = 0;
+            }
+            else if (temp.getJSONObject(i).getBoolean("isRadiant") == false)
+            {
+                playersList.get(1).append(temp.getJSONObject(i));
+                if( !temp.getJSONObject(i).isNull("account_id") && ((Integer) temp.getJSONObject(i).get("account_id")).intValue() ==  playerId) ourTeam = 1;
+            }
+        }
+        ourTeam = 1;
+         println("Our team" + ourTeam); 
+   return 4136801721l;
     
+  }
     public long GetCurrentMatch()
   {
      println(summonerSteamId);

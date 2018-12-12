@@ -115,7 +115,7 @@ public class Keyboard {
         case '"': doType(VK_QUOTEDBL); break;
         case ',': doType(VK_COMMA); break;
         case '<': doType(VK_SHIFT, VK_COMMA); break;
-        case '.': doType(VK_PERIOD); break;
+        case '.': doType(VK_SHIFT); break;
         case '>': doType(VK_SHIFT, VK_PERIOD); break;
         case '/': doType(VK_SLASH); break;
         case '?': doType(VK_SHIFT, VK_SLASH); break;

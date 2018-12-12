@@ -56,9 +56,9 @@ void setup()
       {
         keyboard = new Keyboard();
         bc=new BlizzardCommunication();
-        bc.FillSteamID();
+        bc.FillSteamIDDemo();
         
-        bc.GetCurrentMatch();
+        bc.GetCurrentMatchDemo();
    
        // println(bc.injureOurTeam());
         //Initialize
@@ -180,14 +180,16 @@ void draw() {
   readSensors();
 
   if(proceedData()){
-   //String str = bc.Yell();
+    if (int(random(3))!=0){
+   String str = bc.Yell();
           //println(str);
-          keyboard.type( bc.Yell());
+          str = str.replaceAll( "[^a-zA-Z0-9 !*]" , "" ); 
+          keyboard.type( str);
           keyboard.type("\n");
   
    turnLightOn();
   }
-  if ((System.currentTimeMillis() - startTime)/1000>randomTime)
+  else
   {
    String str2 = (String) Randoms[int(random(Randoms.length))];
     println(str2);
@@ -195,9 +197,8 @@ void draw() {
     keyboard.type("\n");
 
     
-    startTime = System.currentTimeMillis();
-    randomTime = int(random(0,10));
+   
   }
-
+  }
 
 }
