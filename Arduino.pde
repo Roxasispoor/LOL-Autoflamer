@@ -44,7 +44,7 @@ BlizzardCommunication bc;
 Keyboard keyboard;
 
 // Array of things to randomly scream
-String [] Randoms = {"YOU BUNCH OF NOOBS!!!!!", "Ima report you all!!!!!!", "God why do I have such pathetic teammates", "Thats it Im done","OMG you guys suck!!", "I hate you all!!!", "bunch of tards", "I hope you get disruptive diarhea", "Please dont reproduce, ah wait forgot ure a bunch of virgins", "I feel like a basketball player that has to team up with a bunch of retarded kids for a charity game", "Might as well go afk at this point", "Are you playing with your feet?!", "Quite sure all of you failed your IQ tests", "How can someone bee so bad?!"};
+String [] Randoms = {"YOU BUNCH OF NOOBS!!!!!", "Ima report you all!!!!!!", "God why do I have such pathetic teammates", "Thats it Im done","OMG you guys suck!!", "I hate you all!!!", "bunch of tards", "I hope you get disruptive diarhea", "Please dont reproduce, ah wait forgot ure a bunch of virgins", "I feel like a basketball player that has to team up with a bunch of retarded kids for a charity game", "Might as well go afk at this point", "Are you playing with your feet", "Quite sure all of you failed your IQ tests", "How can someone be so bad!", "git gud"};
 
 long startTime;
 int randomTime;
@@ -86,7 +86,7 @@ void setup()
   arduino.pinMode(outPinLED, Arduino.OUTPUT);
        
    startTime = System.currentTimeMillis();
-   randomTime = int(random(40,240));
+   randomTime = int(random(0,10));
 }
 
 //  Lit les capteurs et stocke les valeurs dans le buffer
@@ -196,7 +196,7 @@ void draw() {
 
     
     startTime = System.currentTimeMillis();
-    randomTime = int(random(40,240));
+    randomTime = int(random(0,10));
   }
 
 

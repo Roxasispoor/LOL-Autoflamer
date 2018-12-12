@@ -102,7 +102,7 @@ public class BlizzardCommunication {
     
     public String injureOurTeam() {
       String result = "";
-      int seed = (int)(Math.random() * 5);
+      int seed = (int)(Math.random() * 4);
       if (seed<=1){
       beginning = Beginnings[int(random(Beginnings.length))];
       ending = Endings[int(random(Endings.length))];
@@ -120,13 +120,16 @@ public class BlizzardCommunication {
           if(playerToInjure != null) {
             result = "F***ing bot " + getName(playerToInjure) + "!!!!!!!";
           }
+          else{
+            result = "go play tetris!";
+          }
           break;
         case 3 : 
         result = GetMostPing(ourTeam);
         break;
-       /*  case 4 : 
+         case 4 : 
         result = MinMaxLastChat();
-        break;*/
+        break;
 
         default: break;
       }
@@ -192,6 +195,9 @@ public class BlizzardCommunication {
           JSONObject playerToInjure = getBot((ourTeam + 1) % 2);
           if(playerToInjure != null) {
             result = "F***ing bot " + getName(playerToInjure) + "noob!!!!!!! get rekt";
+          }
+          else{
+            result = "go play tetris!";
           }
           break;
         case 3 :
