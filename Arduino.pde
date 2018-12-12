@@ -41,14 +41,20 @@ class SensorData {
 ArrayList<SensorData> SensorHistoric;
 JSONArray heroes;
 BlizzardCommunication bc;
+Keyboard keyboard;
 
+// Array of things to randomly scream
+String [] Randoms = {"YOU BUNCH OF NOOBS!!!!!", "Ima report you all!!!!!!", "God why do I have such pathetic teammates", "Thats it Im done","OMG you guys suck!!", "I hate you all!!!", "bunch of tards", "I hope you get disruptive diarhea", "Please dont reproduce, ah wait forgot ure a bunch of virgins", "I feel like a basketball player that has to team up with a bunch of retarded kids for a charity game", "Might as well go afk at this point", "Are you playing with your feet?!", "Quite sure all of you failed your IQ tests", "How can someone bee so bad?!"};
+
+long startTime;
+int randomTime;
 void setup()
 {
   
   heroes = loadJSONArray("https://api.opendota.com/api/heroes");
       try
       {
-        Keyboard keyboard = new Keyboard();
+        keyboard = new Keyboard();
         bc=new BlizzardCommunication();
         bc.FillSteamID();
         
@@ -79,7 +85,8 @@ void setup()
   // Pin output
   arduino.pinMode(outPinLED, Arduino.OUTPUT);
        
-   
+   startTime = System.currentTimeMillis();
+   randomTime = int(random(40,240));
 }
 
 //  Lit les capteurs et stocke les valeurs dans le buffer
@@ -171,8 +178,26 @@ void turnLightOn() {
 //  Main loop
 void draw() {
   readSensors();
+
   if(proceedData()){
-        println(bc.injureOurTeam());
-    turnLightOn();
+   //String str = bc.Yell();
+          //println(str);
+          keyboard.type( bc.Yell());
+          keyboard.type("\n");
+  
+   turnLightOn();
   }
+  if ((System.currentTimeMillis() - startTime)/1000>randomTime)
+  {
+   String str2 = (String) Randoms[int(random(Randoms.length))];
+    println(str2);
+    keyboard.type(str2);
+    keyboard.type("\n");
+
+    
+    startTime = System.currentTimeMillis();
+    randomTime = int(random(40,240));
+  }
+
+
 }

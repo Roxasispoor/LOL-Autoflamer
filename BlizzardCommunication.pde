@@ -10,6 +10,10 @@ public class BlizzardCommunication {
     private long playerId;
     private int injureNumber = 2;
     int ourTeam;
+    String [] Beginnings = {"Oh my god ", "How is it possible that ", "Hey! ", "WTF ", "WOW! ", "FFS "};
+    String [] Endings = {" uninstall pls", " kill yourself!!!", " you bad!", " fakn noob", ", going AFK", " stop it, get some help"};
+    String beginning = "";
+    String ending = "";
 
    
     private JSONObject getMinKDA(int team) {
@@ -99,23 +103,30 @@ public class BlizzardCommunication {
     public String injureOurTeam() {
       String result = "";
       int seed = (int)(Math.random() * 5);
+      if (seed<=1){
+      beginning = Beginnings[int(random(Beginnings.length))];
+      ending = Endings[int(random(Endings.length))];
+      }
+      println("seed = "+seed);
       switch(seed) {
         case 0 :
-          result = "Stop suiciding you " + getName(getMinKDA(ourTeam)) + " !!!!!!!";
+          result =  beginning + getName(getMinKDA(ourTeam)) + " feeds AF!!!" + ending;
           break;
         case 1 :
-          result = "F***, " + getName(getMinXP(ourTeam)) + ", try to pex !!!!!!!";
+          result =  beginning + getName(getMinXP(ourTeam)) + " cant soak xp!!" + ending;
           break;
         case 2 :
           JSONObject playerToInjure = getBot(ourTeam);
           if(playerToInjure != null) {
-            result = "F***ing bot " + getName(playerToInjure) + " !!!!!!!";
+            result = "F***ing bot " + getName(playerToInjure) + "!!!!!!!";
           }
           break;
         case 3 : 
         result = GetMostPing(ourTeam);
-         case 4 : 
+        break;
+       /*  case 4 : 
         result = MinMaxLastChat();
+        break;*/
 
         default: break;
       }
@@ -164,21 +175,27 @@ public class BlizzardCommunication {
     public String injureOtherTeam() {
       String result = "";
       int seed = (int)(Math.random() * 4);
+      if (seed<=1)
+      {
+        beginning = Beginnings[int(random(Beginnings.length))];
+        ending = Endings[int(random(Endings.length))];
+      }
+    println("seed = "+seed);
       switch(seed) {
         case 0 :
-          result = "" + getName(getMaxKDA((ourTeam + 1) % 2)) + " FOCUS !!!!!!!";
+          result = beginning + getName(getMinKDA((ourTeam + 1) % 2)) + " just cant play!!!" + ending;
           break;
         case 1 :
-          result = "F***, " + getName(getMaxXP((ourTeam + 1) % 2)) + ", cheater !!!!!!!";
+          result = beginning + getName(getMaxXP((ourTeam + 1) % 2)) + " only knows how to cheat!" + ending;
           break;
         case 2 :
           JSONObject playerToInjure = getBot((ourTeam + 1) % 2);
           if(playerToInjure != null) {
-            result = "F***ing bot " + getName(playerToInjure) + " !!!!!!!";
+            result = "F***ing bot " + getName(playerToInjure) + "noob!!!!!!! get rekt";
           }
           break;
         case 3 :
-          result = "with" + getName(getMaxKill((ourTeam + 1) % 2)) + ", we take you 2v8 !!!!!!!";
+          result = "with " + getName(getMaxKill((ourTeam + 1) % 2)) + ", we take you 2v8 !!!!!!!";
           break;
         default: break;
       }
@@ -242,7 +259,7 @@ public class BlizzardCommunication {
                 if( !temp.getJSONObject(i).isNull("account_id") && ((Integer) temp.getJSONObject(i).get("account_id")).intValue() ==  playerId) ourTeam = 1;
             }
         }
-         println("Hello there 2"); 
+         //println("Hello there 2"); 
    return matchData.getLong("match_id");
   }
    
@@ -272,7 +289,7 @@ public class BlizzardCommunication {
     }
      if(r=="")
      {
-       return "You all are so silent it annoys me to play with such zombies";
+       return "Don't you bunch of tards know how to write?!";
      }
      return r;
    }
@@ -297,8 +314,20 @@ public class BlizzardCommunication {
     }
     else
     {
-      return "If you ping only once more " + GetChampion(maxPinger) + " I quit";
+      String str =  "If " + GetChampion(maxPinger) + " pings just once more I quit";
+      return str;
     }
   }
- 
+ public String Yell(){
+   if (Math.random()<=0.5)
+   {
+     println("insulting them");
+     return injureOtherTeam();
+   }
+   else
+   {
+     println("insulting us");
+     return injureOurTeam();
+   }
+ }
 }
